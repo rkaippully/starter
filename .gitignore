@@ -1,0 +1,4 @@
+.stack-work/
+starter.cabal
+*~
+.DS_Store

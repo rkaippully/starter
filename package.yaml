@@ -1,0 +1,38 @@
+name:                starter
+version:             0.1.0
+github:              "rkaippully/starter"
+license:             BSD3
+author:              "Raghu Kaippully"
+maintainer:          "rkaippully@gmail.com"
+copyright:           "Copyright (c) Raghu Kaippully"
+
+extra-source-files:
+  - README.md
+  - ChangeLog.md
+
+category:            Development
+synopsis:            Live restartable development environment
+description:         Please see the README on Github at <https://github.com/rkaippully/starter#readme>
+
+executables:
+  starter:
+    main:                Main.hs
+    source-dirs:         src
+    other-modules:
+      - Starter.Config
+      - Starter.Starter
+    dependencies:
+      - base
+      - text
+      - mtl
+      - optparse-applicative
+      - aeson
+      - yaml
+      - unix
+      - fsnotify
+    ghc-options:
+      - -threaded
+      - -rtsopts
+      - -with-rtsopts=-N
+      - -Wall
+      - -O2
