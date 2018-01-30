@@ -8,11 +8,11 @@ launch-command: "stack ghci"
 # After the command is launched, these `start-commands` will be passed to it via `stdin`
 start-commands:
   - "import Main"
-  - "Main.main"
+  - "map (* 2) [1..10]"
 
 # Every time files get modified, a SIGINT is sent to the the program and then these commands will be
 # sent to it via `stdin`
 restart-commands:
   - ":reload"
   - "import Main"
-  - "Main.main"
+  - "map (* 3) [0..5]"

@@ -10,39 +10,44 @@ import Control.Monad.IO.Class (MonadIO (..))
 import Control.Monad.Reader   (MonadReader (..), asks)
 import Data.Text              (Text, unpack)
 import Starter.Config         (Config (..))
-import System.Exit            (exitFailure, exitWith)
-import System.FSNotify        (watchTree, withManager)
-import System.Posix.Process   (ProcessStatus (..), executeFile, forkProcess, getProcessStatus)
-import System.Posix.Types     (ProcessID)
+import System.Exit            (exitWith)
+import System.FSNotify        (Debounce (..), WatchConfig (..), defaultConfig, watchTree,
+                               withManagerConf)
+import System.IO              (Handle, hFlush, hPutStrLn)
+import System.Process         (interruptProcessGroupOf)
+import System.Process.Typed   (Process, createPipe, getStdin, proc, setCreateGroup, setStdin,
+                               unsafeProcessHandle, waitExitCode, withProcess_)
 
 runStarter :: (MonadReader Config m, MonadIO m) => m ()
 runStarter = do
-  pid <- launchProgram
-  launchWatcher (restartProgram pid)
-  waitForTermination pid
-
-launchProgram :: (MonadReader Config m, MonadIO m) => m ProcessID
-launchProgram = do
   prog <- asks cfgLaunchCommand
   args <- asks cfgLaunchArgs
-  liftIO $ forkProcess (start prog args)
-  where
-    start :: Text -> [Text] -> IO ()
-    start prog args = executeFile (unpack prog) True (unpack <$> args) Nothing
+  startCmds <- asks cfgStartCommands
+  restartCmds <- asks cfgRestartCommands
 
-launchWatcher :: MonadIO m => IO () -> m ()
-launchWatcher restart = liftIO $ void $ withManager $ \mgr ->
-    watchTree mgr "." (const True) (const restart)
+  let procConfig = setStdin createPipe
+                   $ setCreateGroup True
+                   $ proc (unpack prog) (unpack <$> args)
 
--- | Wait till the program terminates
-waitForTermination :: MonadIO m => ProcessID -> m ()
-waitForTermination pid = liftIO $ do
-  status <- getProcessStatus True False pid
-  case status of
-    Nothing               -> waitForTermination pid
-    Just (Exited code)    -> exitWith code
-    Just (Terminated _ _) -> exitFailure
-    Just (Stopped _)      -> waitForTermination pid
+  -- Start the program
+  liftIO $ withProcess_ procConfig $ \p -> do
+    -- Run the start commands
+    sendCommands p startCmds
 
-restartProgram :: ProcessID -> IO ()
-restartProgram = undefined
+    -- Register a watcher
+    withManagerConf (defaultConfig {confDebounce = Debounce 1}) $ \mgr -> do
+      void $ watchTree mgr "." (const True) (const $ restartProgram p restartCmds)
+      -- wait for the program to die
+      waitExitCode p >>= exitWith
+
+
+sendCommands :: Process Handle stdout stderr -> [Text] -> IO ()
+sendCommands p cmds = do
+  let h = getStdin p
+  mapM_ (hPutStrLn h) $ unpack <$> cmds
+  hFlush h
+
+restartProgram :: Process Handle stdout stderr -> [Text] -> IO ()
+restartProgram p cmds = do
+  interruptProcessGroupOf $ unsafeProcessHandle p
+  sendCommands p cmds

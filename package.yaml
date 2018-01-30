@@ -14,6 +14,7 @@ category:            Development
 synopsis:            Live restartable development environment
 description:         Please see the README on Github at <https://github.com/rkaippully/starter#readme>
 
+
 executables:
   starter:
     main:                Main.hs
@@ -21,6 +22,7 @@ executables:
     other-modules:
       - Starter.Config
       - Starter.Starter
+      - Paths_starter
     dependencies:
       - base
       - text
@@ -29,6 +31,8 @@ executables:
       - aeson
       - yaml
       - unix
+      - process
+      - typed-process
       - fsnotify
     ghc-options:
       - -threaded
