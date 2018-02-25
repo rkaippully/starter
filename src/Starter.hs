@@ -17,12 +17,12 @@
   Starter is a library that you link to your program. With a few simple steps, you can set up a
   GHCi session that automatically reloads your program whenever your source code changes.
 
-  1. In some module of your program (e.g. @MyModule@), define a variable @settings@ of type 'StarterSettings'.
+  1. In some module of your program (e.g. @MyModule@), define a variable @mySettings@ of type 'StarterSettings'.
   2. Create a @.ghci@ file in your project with the following contents:
 
      @
      :load MyModule Starter
-     :def! starter runStarter settings
+     :def! starter runStarter mySettings
      @
   3. Now you can start your program with the @:starter@ command. This will run your program under a monitor.
      When the source code changes, the monitor will interrupt the program with an exception, reload
@@ -47,9 +47,7 @@ data StarterSettings = StarterSettings {
   starterProgram             :: String -> IO ()
   -- | The GHCi command name
   , starterCommand           :: String
-  -- | The expression that should be bound to the GHCi command. This should be the stringified
-  -- version of the settings passed to 'runStarter'. For e.g., if the settings are coming from a
-  -- variable @mySettings@, this should be set to the string "mySettings".
+  -- | The expression that should be bound to the GHCi command. For e.g., @runStarter mySettings@.
   , starterCommandExpression :: String
   -- | Predicate to determine if the program should be restarted on change of a file.
   , starterIsRestartable     :: FilePath -> Bool
