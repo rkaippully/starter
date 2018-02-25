@@ -1,42 +1,22 @@
 name:                starter
 version:             0.1.0
 github:              "rkaippully/starter"
-license:             BSD3
+license:             MPL-2.0
 author:              "Raghu Kaippully"
 maintainer:          "rkaippully@gmail.com"
-copyright:           "Copyright (c) Raghu Kaippully"
+copyright:           "2018 Raghu Kaippully"
 
 extra-source-files:
-  - README.md
-  - ChangeLog.md
+- README.md
+- ChangeLog.md
 
-category:            Development
-synopsis:            Live restartable development environment
+synopsis:            Develop applications without restarts
+category:            Web
 description:         Please see the README on Github at <https://github.com/rkaippully/starter#readme>
 
+dependencies:
+  - base >= 4.7 && < 5
+  - fsnotify >= 0.2.1 && < 0.3
 
-executables:
-  starter:
-    main:                Main.hs
-    source-dirs:         src
-    other-modules:
-      - Starter.Config
-      - Starter.Starter
-      - Paths_starter
-    dependencies:
-      - base
-      - text
-      - mtl
-      - optparse-applicative
-      - aeson
-      - yaml
-      - unix
-      - process
-      - typed-process
-      - fsnotify
-    ghc-options:
-      - -threaded
-      - -rtsopts
-      - -with-rtsopts=-N
-      - -Wall
-      - -O2
+library:
+  source-dirs: src
