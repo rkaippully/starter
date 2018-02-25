@@ -20,10 +20,11 @@
   1. In some module of your program (e.g. @MyModule@), define a variable @mySettings@ of type 'StarterSettings'.
   2. Create a @.ghci@ file in your project with the following contents:
 
-     @
-     :load MyModule Starter
-     :def! starter runStarter mySettings
-     @
+       @
+       :load MyModule Starter
+       :def! starter runStarter mySettings
+       @
+
   3. Now you can start your program with the @:starter@ command. This will run your program under a monitor.
      When the source code changes, the monitor will interrupt the program with an exception, reload
      the modules with a @:reload@ command and restart the program.
