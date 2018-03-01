@@ -10,6 +10,8 @@ tedious cycle.
 
 See documentation of module `Starter` for details.
 
+An example web server using starter can be found in `example` directory.
+
 # License
 Starter is distributed under Mozilla Public License 2.0. See the file LICENSE for details.
 

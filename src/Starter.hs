@@ -18,11 +18,12 @@
   GHCi session that automatically reloads your program whenever your source code changes.
 
   1. In some module of your program (e.g. @MyModule@), define a variable @mySettings@ of type 'StarterSettings'.
+  2. Define a function @runDevMode = runStarter mySettings@.
   2. Create a @.ghci@ file in your project with the following contents:
 
        @
        :load MyModule Starter
-       :def! starter runStarter mySettings
+       :def! starter runDevMode
        @
 
   3. Now you can start your program with the @:starter@ command. This will run your program under a monitor.
@@ -44,11 +45,14 @@ import System.FSNotify    (Debounce (..), Event, WatchConfig (..), defaultConfig
 
 
 data StarterSettings = StarterSettings {
-  -- | The program to be run by starter
+  -- | The program to be run by starter. The command line arguments passed to the GHCi command will
+  -- be passed to this function.
   starterProgram             :: String -> IO ()
   -- | The GHCi command name
   , starterCommand           :: String
-  -- | The expression that should be bound to the GHCi command. For e.g., @runStarter mySettings@.
+  -- | The expression that should be bound to the GHCi command. For e.g., if you created a @.ghci@
+  -- file with the command @:def! starter runDevMode@, then this should be set to
+  -- @runDevMode@.
   , starterCommandExpression :: String
   -- | Predicate to determine if the program should be restarted on change of a file.
   , starterIsRestartable     :: FilePath -> Bool
