@@ -24,7 +24,6 @@ library:
     - condition: impl(ghc >= 8.0.1)
       then:
         ghc-options:
-          - -O2
           - -Wall
           - -Wcompat
           - -Wredundant-constraints
@@ -32,7 +31,6 @@ library:
           - -Wincomplete-uni-patterns
       else:
         ghc-options:
-          - -O2
           - -Wall
           - -fwarn-incomplete-record-updates
           - -fwarn-incomplete-uni-patterns
