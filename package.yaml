@@ -34,7 +34,5 @@ library:
         ghc-options:
           - -O2
           - -Wall
-          - -Wcompat
-          - -Wredundant-constraints
           - -fwarn-incomplete-record-updates
           - -fwarn-incomplete-uni-patterns
