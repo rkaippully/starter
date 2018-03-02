@@ -1,5 +1,5 @@
 name:                starter
-version:             0.2.0
+version:             0.2.1
 github:              "rkaippully/starter"
 license:             MPL-2.0
 author:              "Raghu Kaippully"
@@ -20,10 +20,21 @@ dependencies:
 
 library:
   source-dirs: src
-  ghc-options:
-    - -O2
-    - -Wall
-    - -Wcompat
-    - -Wincomplete-record-updates
-    - -Wincomplete-uni-patterns
-    - -Wredundant-constraints
+  when:
+    - condition: impl(ghc >= 8.0.1)
+      then:
+        ghc-options:
+          - -O2
+          - -Wall
+          - -Wcompat
+          - -Wredundant-constraints
+          - -Wincomplete-record-updates
+          - -Wincomplete-uni-patterns
+      else:
+        ghc-options:
+          - -O2
+          - -Wall
+          - -Wcompat
+          - -Wredundant-constraints
+          - -fwarn-incomplete-record-updates
+          - -fwarn-incomplete-uni-patterns
