@@ -80,24 +80,16 @@ matrix:
   #  compiler: ": #stack 7.10.2"
   #  addons: {apt: {packages: [libgmp-dev]}}
 
-  - env: BUILD=stack ARGS="--resolver lts-6"
-    compiler: ": #stack lts-6"
-    addons: {apt: {packages: [libgmp-dev]}}
-
-  - env: BUILD=stack ARGS="--resolver lts-7"
-    compiler: ": #stack lts-7"
-    addons: {apt: {packages: [libgmp-dev]}}
-
-  - env: BUILD=stack ARGS="--resolver lts-8"
-    compiler: ": #stack lts-8"
-    addons: {apt: {packages: [libgmp-dev]}}
-
   - env: BUILD=stack ARGS="--resolver lts-9"
     compiler: ": #stack lts-9"
     addons: {apt: {packages: [libgmp-dev]}}
 
   - env: BUILD=stack ARGS="--resolver lts-10"
     compiler: ": #stack lts-10"
+    addons: {apt: {packages: [libgmp-dev]}}
+
+  - env: BUILD=stack ARGS="--resolver lts-11"
+    compiler: ": #stack lts-11"
     addons: {apt: {packages: [libgmp-dev]}}
 
   # Nightly builds are allowed to fail
@@ -119,24 +111,16 @@ matrix:
   #  compiler: ": #stack 7.10.2 osx"
   #  os: osx
 
-  - env: BUILD=stack ARGS="--resolver lts-6"
-    compiler: ": #stack lts-6 osx"
-    os: osx
-
-  - env: BUILD=stack ARGS="--resolver lts-7"
-    compiler: ": #stack lts-7 osx"
-    os: osx
-
-  - env: BUILD=stack ARGS="--resolver lts-8"
-    compiler: ": #stack lts-8 osx"
-    os: osx
-
   - env: BUILD=stack ARGS="--resolver lts-9"
     compiler: ": #stack lts-9 osx"
     os: osx
 
   - env: BUILD=stack ARGS="--resolver lts-10"
     compiler: ": #stack lts-10 osx"
+    os: osx
+
+  - env: BUILD=stack ARGS="--resolver lts-11"
+    compiler: ": #stack lts-11 osx"
     os: osx
 
   - env: BUILD=stack ARGS="--resolver nightly"
